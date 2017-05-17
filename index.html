@@ -1,0 +1,161 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="./favicon.ico" type="image/x-icon" />
+    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+    <script src="./filetransfer.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <title>Taxonomy assignment queue</title>
+</head>
+<body>
+    <br><br>
+    
+    <div class="container">
+        <pre><code>
+            <p>place queue status here</p>
+        </code></pre>
+    </div>
+
+    <div class="container">
+        <!-- Drop files here container -->
+        <div class="row">
+            <div id="drop-files" ondragover="return false"> <!-- ondragover for firefox -->
+                Drop Files Here
+            </div>
+        </div>
+
+        <br>
+
+        <!-- Fwd, Bwd primer seq selection -->
+        <div class="row">
+            <form id="optionForm" name="optionForm" role="form">
+
+                <div class="form-group">
+                    <label for="select">Primer sequence</label>
+                    <select name="primerseq" class="form-control">
+                        <option selected="selected" value="Bacteria">Bacteria</option>
+                        <option value="Archaea">Archaea</option>
+                        <option value="Prokaryotes">Prokaryotes</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="match-option">Match option</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox">
+                            <label>
+                              <input type="checkbox" id="checkFwd" name="checkFwd" value="fwdp">
+                              Forward Primer
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                              <input type="checkbox" id="checkRev" name="checkRev" value="revp">
+                              Reverse Primer
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                              <input type="checkbox" id="checkFull" name="checkFull" value="fl">
+                              Full length
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="select">Taxonomy assign algorithm</label>
+                    <select name="taxalg" class="form-control">
+                        <option selected="selected" value="RDP">RDP</option>
+                        <option value="BLAST">BLAST</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="select">RDP Database</label>
+                    <select name="rdpdb" class="form-control">
+                        <option selected="selected" value="greengenes">greengenes</option>
+                        <option value="silva">silva</option>
+                        <option value="unite">unite</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="select">Confidency level</label>
+                    <select name="conflevel" class="form-control">
+                        <option value="0.9">0.9</option>
+                        <option value="0.8">0.8</option>
+                        <option value="0.7">0.7</option>
+                        <option value="0.6">0.6</option>
+                        <option value="0.5">0.5</option>
+                        <option value="0.4">0.4</option>
+                        <option value="0.3">0.3</option>
+                        <option selected="selected" value="0.2">0.2</option>
+                        <option value="0.1">0.1</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="select">Truncate length</label>
+                    <select name="trlen" class="form-control">
+                        <option selected="selected" value="nt">Not truncate</option>
+                        <option value="200">200bp</option>
+                        <option value="250">250bp</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+
+        <!-- Upload button -->
+        <div class="row">
+            <div id="uploaded-holder">
+                <div id="dropped-files">
+                    <div id="upload-button">
+                        <a href="#" class="upload"><i class="ss-upload"> </i> Upload!</a>
+                        <a href="#" class="delete"><i class="ss-delete"> </i></a>
+                        <span>0 Files</span>
+                    </div>
+                </div>
+                <div id="extra-files">
+                    <div class="number">
+                        0
+                    </div>
+                    <div id="file-list">
+                        <ul></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+         
+         
+        <div class="row">
+            <div id="loading">
+                <div id="loading-bar">
+                    <div class="loading-color"> </div>
+                </div>
+                <div id="loading-content">Uploading file.jpg</div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div id="result-link">
+                <span></span>
+            </div>
+        </div>
+         
+        <!-- Uploaded files box -->
+        <div class="row">
+            <div id="file-name-holder">
+                <ul id="uploaded-files">
+                    <h1>Uploaded Files</h1>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+
