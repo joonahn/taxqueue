@@ -2,22 +2,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="./favicon.ico" type="image/x-icon" />
-    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
-    <script src="./filetransfer.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="icon" href="./images/favicon.ico" type="image/x-icon" />
+    <script src="./js/jquery-3.2.1.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+    <script src="./js/injectresults.js"></script>
+    <script src="./js/filetransfer.js"></script>
+    <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="./css/style.css" />
     <title>Taxonomy assignment queue</title>
 </head>
 <body>
     <br><br>
-    
-    <div class="container">
-        <pre><code>
-            <p>place queue status here</p>
-        </code></pre>
-    </div>
+
 
     <div class="container">
         <!-- Drop files here container -->
@@ -32,6 +28,11 @@
         <!-- Fwd, Bwd primer seq selection -->
         <div class="row">
             <form id="optionForm" name="optionForm" role="form">
+
+                <div class="form-group">
+                    <label for="select">Task name</label>
+                    <input name="taskname" type="text" class="form-control" id="taskname">
+                </div>
 
                 <div class="form-group">
                     <label for="select">Primer sequence</label>
@@ -146,14 +147,15 @@
             </div>
         </div>
          
-        <!-- Uploaded files box -->
+        <!-- results  -->
         <div class="row">
-            <div id="file-name-holder">
-                <ul id="uploaded-files">
-                    <h1>Uploaded Files</h1>
-                </ul>
-            </div>
+            <div id="result-window"></div>
         </div>
+
+
+
+
+
     </div>
 
 </body>

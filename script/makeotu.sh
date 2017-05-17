@@ -140,16 +140,35 @@ done
 # dereplication
 ./usearch -derep_fulllength "${otufolder}/merged.fa" -fastaout "${otufolder}/derep.fa" -sizeout
 
-#
-# ./usearch -cluster_otus "AHPD_derep.fa" -otus "AHPD_otus.fa" -uparseout "AHPD_out.up" -relabel AHPD_OTU_ -minsize 2
-
 
 # Clustering
 ./usearch -cluster_otus "${otufolder}/derep.fa" -otus "${otufolder}/otus.fa" -minsize 2
 
-
 # Global usearch
 ./usearch -usearch_global "${otufolder}/merged.fa" -db "${otufolder}/otus.fa" -strand plus -id 0.97 -otutabout "${otufolder}/otus.txt"
+
+# OTU renaming
+counter=0
+mv "${otufolder}/otus.fa" "${otufolder}/otus_r.fa"
+touch "${otufolder}/otus.fa"
+while IFS='' read -r line || [[ -n "$line" ]]; do
+    if [[ $line == *">"* ]]; then
+	    counter=$((counter+1))
+	    echo "Text read from file: $line"
+	    firstp=$(echo $line | grep -P '^>\d{3}.' -o)
+	    secondp=$(echo $line | grep -P ';.+' -o)
+	    labelname=$(echo $line | grep -P '(?<=>\d{3}\.)[^;]+' -o)
+	    echo "${firstp}otu${counter}${secondp}" >> "${otufolder}/otus.fa"
+	    sed -ie "s/${labelname}/otu${counter}/g" "${otufolder}/otus.txt"
+    else
+	echo $line >> "${otufolder}/otus.fa"
+    fi
+done < "${otufolder}/otus_r.fa"
+
+# OTU table sorting
+python sortotu.py "${otufolder}/otus.txt"
+rm "${otufolder}/otus.txt"
+mv "${otufolder}/sotus.txt" "${otufolder}/otus.txt"
 
 # Output -- "${otufolder}/otus1.fa" and "${otufolder}/otus.txt"
 echo "${otufolder}"

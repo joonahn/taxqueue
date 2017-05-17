@@ -72,7 +72,7 @@
 
 		echo shell_exec("bash ../script/taxassn.sh ".$shellarg." 2>&1");
 		return array($folder."/tax_output/otus_tax_assignments.txt",
-			$folder."/otus.txt");
+			$folder."/otus.txt", $folder."/otus.fa");
 	}
 
 	function archive($archive_list, $folder_name) {
