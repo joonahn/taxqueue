@@ -3,8 +3,8 @@
 import sys
 import os.path
 
-taxfilename = sys.argv[2]
 otufilename = sys.argv[1]
+taxfilename = sys.argv[2]
 directory = os.path.dirname(taxfilename)
 taxassn = os.path.dirname(taxfilename)
 otus = os.path.dirname(otufilename)
@@ -26,6 +26,7 @@ taxlist = []
 otuTaxMapList = []
 fileTaxCntDictList = []
 taxTotalCntMapList = []
+fileTotalCntMapList = []
 
 # Generate otu list
 with open(otufilename, 'r') as f:
@@ -46,6 +47,7 @@ for i in range(0, 7):
 	taxlist.append(['unknown'])
 	fileTaxCntDictList.append(reduce(lambda a,b: a.update({b:{"unknown":0}}) or a, filelist, {}))
 	taxTotalCntMapList.append({"unknown":0})
+	fileTotalCntMapList.append(reduce(lambda a,b: a.update({b:0}) or a, filelist, {}))
 	otuTaxMapList.append(reduce(lambda a,b: a.update({b:"unknown"}) or a, otulist, {}))
 
 with open(taxfilename, 'r') as f:
@@ -81,6 +83,10 @@ with open(otufilename, 'r') as f:
 				exit()
 			else:
 				for j in range(0, len(filelist)):
+
+					tmp = fileTotalCntMapList[i][filelist[j]]
+					fileTotalCntMapList[i][filelist[j]] = tmp + int(cntdata[j])
+
 					if not otuTaxMapList[i][otuID] in fileTaxCntDictList[i][filelist[j]]:
 						fileTaxCntDictList[i][filelist[j]][otuTaxMapList[i][otuID]] = 0
 
@@ -105,7 +111,7 @@ for i in range(0,7):
 		for filename in filelist:
 			outstr = filename + "\t"
 			for tax in taxlist[i]:
-				totalcnt = taxTotalCntMapList[i][tax]
+				totalcnt = fileTotalCntMapList[i][filename]
 				thiscnt = fileTaxCntDictList[i][filename][tax]
 				try:
 					ratio = (thiscnt/float(totalcnt))
@@ -114,13 +120,6 @@ for i in range(0,7):
 					outstr = outstr + "div0" + "\t"
 					
 			f.write(outstr + "\n")
-
-
-
-
-
-
-
 
 
 #/Species	/Genus	/Family	/Order	/Class	/Phylum (animal)	/Kingdom /
