@@ -5,7 +5,7 @@ import os.path
 
 otufilename = sys.argv[1]
 taxfilename = sys.argv[2]
-directory = os.path.dirname(taxfilename)
+directory = os.path.dirname(otufilename)
 taxassn = os.path.dirname(taxfilename)
 otus = os.path.dirname(otufilename)
 outfilename = []

@@ -59,3 +59,6 @@ elif [[ $taxalg == *"UCLUST"* ]]; then
 else
 	echo "ERROR: tax assign algorithm is not specified"
 fi
+
+# run count algorithm and generate count file
+python count.py "${ffolder}/otus.txt" "${ffolder}/tax_output/otus_tax_assignments.txt"

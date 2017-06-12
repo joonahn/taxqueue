@@ -119,11 +119,11 @@ for fname in "$@"; do
 
 	# Filter fastq file and truncate
 	if [[ $trunlen == *"nt"* ]]; then
-		./usearch -fastq_filter "${fname}_concat.fastq" -fastq_maxee 0.5 -fastaout "${fname}_truncate.fa"
+		./usearch -fastq_filter "${fname}_concat.fastq" -fastq_minlen 150 -fastaout "${fname}_truncate.fa"
 	elif [[ $trunlen == *"200"* ]]; then
-		./usearch -fastq_filter "${fname}_concat.fastq" -fastq_trunclen 200 -fastq_maxee 0.5 -fastaout "${fname}_truncate.fa"
+		./usearch -fastq_filter "${fname}_concat.fastq" -fastq_trunclen 200 -fastaout "${fname}_truncate.fa"
 	elif [[ $trunlen == *"250"* ]]; then
-		./usearch -fastq_filter "${fname}_concat.fastq" -fastq_trunclen 250 -fastq_maxee 0.5 -fastaout "${fname}_truncate.fa"
+		./usearch -fastq_filter "${fname}_concat.fastq" -fastq_trunclen 250 -fastaout "${fname}_truncate.fa"
 	else
 		# Error
 		echo "ERROR: truncate option is not specified"
@@ -169,6 +169,8 @@ done < "${otufolder}/otus_r.fa"
 python sortotu.py "${otufolder}/otus.txt"
 rm "${otufolder}/otus.txt"
 mv "${otufolder}/sotus.txt" "${otufolder}/otus.txt"
+
+
 
 # Output -- "${otufolder}/otus1.fa" and "${otufolder}/otus.txt"
 echo "${otufolder}"
