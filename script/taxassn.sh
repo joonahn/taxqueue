@@ -21,11 +21,19 @@ echo -e "${RED}activate succeeded${NC}"
 if [[ $taxalg == *"RDP"* ]]; then
 	export RDP_JAR_PATH="/home/qiime/app/rdp_classifier_2.2/rdp_classifier-2.2.jar"
 	
+	# if [[ $rdpdb == *"greengenes"* ]]; then
+	# 	# tax assign with greengenes db
+	# 	assign_taxonomy.py -i "${ffolder}/otus.fa" \
+	# 	 -t "./gg_otus_4feb2011/taxonomies/greengenes_tax.txt" \
+	# 	 -r "./gg_otus_4feb2011/rep_set/gg_97_otus_4feb2011.fasta" \
+	# 	 -c "${conflevel}" \
+	# 	 -o "${ffolder}/tax_output" -m rdp	
+
 	if [[ $rdpdb == *"greengenes"* ]]; then
 		# tax assign with greengenes db
 		assign_taxonomy.py -i "${ffolder}/otus.fa" \
-		 -t "./gg_otus_4feb2011/taxonomies/greengenes_tax.txt" \
-		 -r "./gg_otus_4feb2011/rep_set/gg_97_otus_4feb2011.fasta" \
+		 -t "./gg_otus_may2013/taxonomy/97_otu_taxonomy.txt" \
+		 -r "./gg_otus_may2013/rep_set/97_otus.fasta" \
 		 -c "${conflevel}" \
 		 -o "${ffolder}/tax_output" -m rdp
 
