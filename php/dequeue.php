@@ -129,6 +129,7 @@
 	{
 		echo $quote."\n";
 	}
+	
 	// Define Callback here
 	$callback = function($msg) {
 		echo " [x] Received ", $msg->body, "\n";

@@ -5,47 +5,83 @@ function print_row($data) {
 	$task_state = 1;
 	$task_link = 2;
 	$task_remark = 3;
+	$task_id = 4;
+
+	$result_script = "";
 
 	$data[$task_state] = trim($data[$task_state]);
+	if (!array_key_exists($task_id, $data))
+	{
+		$data[$task_id] = "";
+	}
 
 	if ($data[$task_state] === 'succeeded')
 	{
-		echo "<tr class='success'><td>".$data[$task_name]."</td>";
+		echo "<tr class='success'>";
+		echo "<td>".$data[$task_name]."</td>";
 		echo "<td>".$data[$task_state]."</td>";
 		echo "<td><a href='".$data[$task_link]."'>".$data[$task_link]."</a></td>";
-		echo "<td>".$data[$task_remark]."</td></tr>";
+		echo "<td>".$data[$task_remark]."</td>";
+		echo "<td><button class='close {$data[$task_id]}'><span aria-hidden='true'>&times;</span></button></td>";
+		echo "</tr>";
+		// Delete button script
+		$result_script .= "$(.{$data[$task_id]})"
+							.".click(function(){"
+							."	$.post('./php/deletefolder.php', {'ID':{$data[$task_id]}});"
+							."});";
 	}
 	else if ($data[$task_state] === 'failed')
 	{
-		echo "<tr class='danger'><td>".$data[$task_name]."</td>";
+		echo "<tr class='danger'>";
+		echo "<td>".$data[$task_name]."</td>";
 		echo "<td>".$data[$task_state]."</td>";
 		echo "<td>".$data[$task_link]."</td>";
-		echo "<td>".$data[$task_remark]."</td></tr>";
+		echo "<td>".$data[$task_remark]."</td>";
+		echo "<td><button class='close {$data[$task_id]}'><span aria-hidden='true'>&times;</span></button></td>";
+		echo "</tr>";
+		// Delete button script
+		$result_script .= "$(.{$data[$task_id]})"
+							.".click(function(){"
+							."	$.post('./php/deletefolder.php', {'ID':{$data[$task_id]}});"
+							."});";
 	}
 	else if ($data[$task_state] === 'queued')
 	{
-		echo "<tr class='warning'><td>".$data[$task_name]."</td>";
-		echo "<td>".$data[$task_state]."</td><td>-</td><td>-</td></tr>";
+		echo "<tr class='warning'>";
+		echo "<td>".$data[$task_name]."</td>";
+		echo "<td>".$data[$task_state]."</td>";
+		echo "<td>-</td>";
+		echo "<td>-</td>";
+		echo "<td></td>";
+		echo "</tr>";
 	}
 	else if ($data[$task_state] === 'processing')
 	{
-		echo "<tr class='warning'><td>".$data[$task_name]."</td>";
-		echo "<td>".$data[$task_state]."</td><td>-</td><td>-</td></tr>";
+		echo "<tr class='warning'>";
+		echo "<td>".$data[$task_name]."</td>";
+		echo "<td>".$data[$task_state]."</td>";
+		echo "<td>-</td>";
+		echo "<td>-</td>";
+		echo "<td></td>";
+		echo "</tr>";
 	}
 	else 
 	{
-		echo "task state: ".$data[$task_state];
-		echo "<tr><td>".$data[$task_name]."</td>";
+		echo "<tr>";
+		echo "<td>malformed data :".$data[$task_name]."</td>";
 		echo "<td>".$data[$task_state]."</td>";
 		echo "<td>".$data[$task_link]."</td>";
-		echo "<td>".$data[$task_remark]."</td></tr>";
+		echo "<td>".$data[$task_remark]."</td>";
+		echo "<td></td>";
+		echo "</tr>";
 	}
 }
 
 echo "<table><thead><tr>";
-echo "<th>task name</th><th>status</th><th>link</th><th>remark</th>";
+echo "<th>task name</th><th>status</th><th>link</th><th>remark</th><th>delete</th>";
 echo "</tr></thead><tbody>";
 
+$result_script = "";
 $fp = fopen("../data/results.txt","r");
 
 while( !feof($fp) ) 
@@ -56,7 +92,7 @@ while( !feof($fp) )
 
 	if (count($data) > 3)
 	{
-		print_row($data);
+		$result_script .= print_row($data);
 	}
 
 }
@@ -72,12 +108,15 @@ while (!feof($fp)) {
 
 	if (count($data) > 1)
 	{
-		print_row($data);
+		$result_script .= print_row($data);
 	}
 }
 
 fclose($fp);
 
 echo "</tbody></table>";
+echo "<script>";
+echo $result_script;
+echo "</script>";
 
 ?>
