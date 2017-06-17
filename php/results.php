@@ -33,7 +33,7 @@ function print_row($data) {
 								.".click(function(){"
 								."	$.post('./php/deletefolder.php', {'ID':'{$data[$task_id]}'})"
 								.".done(function(data) {"
-								."location.reload();"
+								."loadTable();"
 								."});"
 								."});";
 		}
@@ -55,7 +55,7 @@ function print_row($data) {
 								.".click(function(){"
 								."	$.post('./php/deletefolder.php', {'ID':'{$data[$task_id]}'})"
 								.".done(function(data) {"
-								."location.reload();"
+								."loadTable();"
 								."});"
 								."});";
 		}
