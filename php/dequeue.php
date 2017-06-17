@@ -54,6 +54,7 @@
 		$shellarg = "{$randomFolder} {$a2} {$a3} {$a4} {$a5} {$a6} {$a7} {$otutargets}";
 		debug ("shellarg: ".$shellarg);
 		mylog (shell_exec("bash ../script/makeotu.sh ".$shellarg." 2>&1"));
+		shell_exec("chown -R www-data:www-data {$randomFolder}");
 		return $randomFolder;
 	}
 
@@ -79,6 +80,7 @@
 		$shellarg = "{$folder} {$a2} {$a3} {$a4} {$a5} {$a6} {$a7}";
 
 		mylog (shell_exec("bash ../script/taxassn.sh ".$shellarg." 2>&1"));
+		shell_exec("chown -R www-data:www-data {$folder}");
 
 		$toarchiveList = array($folder."/tax_output/otus_tax_assignments.txt",
 			$folder."/otus.txt", $folder."/otus.fa",
@@ -104,6 +106,7 @@
 		}
 
 		shell_exec($cmdstr);
+		shell_exec("chown -R www-data:www-data ../data/{$folder_name}");
 		return "./data/{$folder_name}/{$randomName}";
 	}
 
@@ -136,6 +139,7 @@
 		$post_data = json_decode($msg->body, true);
 
 		shell_exec("sed -ie '/^{$post_data['taskname']}/ s/queued/processing/' ../data/queued.txt");
+		shell_exec("chown www-data:www-data ../data/queued.txt");
 
 		$randomFolder = $post_data['randomfolder'];
 		$otufolder = makeotu($post_data);
