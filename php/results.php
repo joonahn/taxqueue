@@ -14,6 +14,7 @@ function print_row($data) {
 	{
 		$data[$task_id] = "";
 	}
+	$data[$task_id] = trim($data[$task_id]);
 
 	if ($data[$task_state] === 'succeeded')
 	{
@@ -25,9 +26,12 @@ function print_row($data) {
 		echo "<td><button class='close {$data[$task_id]}'><span aria-hidden='true'>&times;</span></button></td>";
 		echo "</tr>";
 		// Delete button script
-		$result_script .= "$(.{$data[$task_id]})"
+		$result_script .= "$('.{$data[$task_id]}')"
 							.".click(function(){"
-							."	$.post('./php/deletefolder.php', {'ID':{$data[$task_id]}});"
+							."	$.post('./php/deletefolder.php', {'ID':'{$data[$task_id]}'})"
+							.".done(function(data) {"
+							."location.reload();"
+							."});"
 							."});";
 	}
 	else if ($data[$task_state] === 'failed')
@@ -40,9 +44,12 @@ function print_row($data) {
 		echo "<td><button class='close {$data[$task_id]}'><span aria-hidden='true'>&times;</span></button></td>";
 		echo "</tr>";
 		// Delete button script
-		$result_script .= "$(.{$data[$task_id]})"
+		$result_script .= "$('.{$data[$task_id]}')"
 							.".click(function(){"
-							."	$.post('./php/deletefolder.php', {'ID':{$data[$task_id]}});"
+							."	$.post('./php/deletefolder.php', {'ID':'{$data[$task_id]}'})"
+							.".done(function(data) {"
+							."location.reload();"
+							."});"
 							."});";
 	}
 	else if ($data[$task_state] === 'queued')
@@ -75,10 +82,11 @@ function print_row($data) {
 		echo "<td></td>";
 		echo "</tr>";
 	}
+	return $result_script;
 }
 
 echo "<table><thead><tr>";
-echo "<th>task name</th><th>status</th><th>link</th><th>remark</th><th>delete</th>";
+echo "<th>task name</th><th>status</th><th>link</th><th>remark</th><th></th>";
 echo "</tr></thead><tbody>";
 
 $result_script = "";

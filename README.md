@@ -34,6 +34,7 @@ Taxonomy assignment with task queue
 - `dequeue.php` :	(r,w)/(w)
 - `vallidate.php` :	(r)
 - `results.php` :	(r)
+- `deletefolder.php` : ()/(w)
 
 ## queue.txt File format
 - tab separated string
