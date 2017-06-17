@@ -110,18 +110,18 @@
 		return "./data/{$folder_name}/{$randomName}";
 	}
 
-	function failed($taskname, $reason) {
+	function failed($taskname, $reason, $ID) {
 		shell_exec("sed -ie '/^{$taskname}/d' ../data/queued.txt");
-		$result_str = "{$taskname}\tfailed\t-\t{$reason}";
+		$result_str = "{$taskname}\tfailed\t-\t{$reason}\t{$ID}";
 		shell_exec("echo \"{$result_str}\" >> ../data/results.txt");
 		shell_exec("chown www-data:www-data ../data/results.txt");
 		shell_exec("chown www-data:www-data ../data/queued.txt");
 		echo ("[{$taskname}]:\tfailed due to {$reason}");
 	}
 
-	function succeeded($taskname, $archivePath) {
+	function succeeded($taskname, $archivePath, $ID) {
 		shell_exec("sed -ie '/^{$taskname}/d' ../data/queued.txt");
-		$result_str = "{$taskname}\tsucceeded\t{$archivePath}\tsucceeded";
+		$result_str = "{$taskname}\tsucceeded\t{$archivePath}\tsucceeded\t{$ID}";
 		shell_exec("echo \"{$result_str}\" >> ../data/results.txt");
 		shell_exec("chown www-data:www-data ../data/results.txt");
 		shell_exec("chown www-data:www-data ../data/queued.txt");
@@ -144,24 +144,24 @@
 		$randomFolder = $post_data['randomfolder'];
 		$otufolder = makeotu($post_data);
 		if ($otufolder === "") {
-			failed($post_data['taskname'], "makeotu failed");
+			failed($post_data['taskname'], "makeotu failed", $post_data['randomfolder']);
 			return;
 		}
 
 		$resultFiles = taxassn($post_data, $randomFolder);
 		if (count($resultFiles) === 0) {
-			failed($post_data['taskname'], "taxonomy assignment failed");
+			failed($post_data['taskname'], "taxonomy assignment failed", $post_data['randomfolder']);
 			return;
 		}
 
 		$archivePath = archive($resultFiles, $randomFolder);
 		if ($archivePath === "") {
-			failed($post_data['taskname'], "archiving failed");
+			failed($post_data['taskname'], "archiving failed", $post_data['randomfolder']);
 			return;
 		}
 
 		// delete specific line @ queued.txt
-		succeeded($post_data['taskname'], $archivePath);
+		succeeded($post_data['taskname'], $archivePath, $post_data['randomfolder']);
 		return;
 	};
 
