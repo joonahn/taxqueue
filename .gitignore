@@ -2,3 +2,6 @@ data/
 script/SILVA_128_QIIME_release/
 script/gg_otus_4feb2011/
 script/gg_otus_may2013/
+log/
+vendor/
+composer.lock
