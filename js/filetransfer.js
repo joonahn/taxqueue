@@ -103,7 +103,7 @@ $(document).ready(function() {
 			setTimeout(function() {
 				restartFiles();
 				loadTable();
-				window.scrollTo(0,document.body.scrollHeight);
+				$('html,body').animate({scrollTop: document.body.scrollHeight},"slow");
 			}, 500);
 
 		});
