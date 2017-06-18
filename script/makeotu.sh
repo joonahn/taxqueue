@@ -154,7 +154,6 @@ touch "${otufolder}/otus.fa"
 while IFS='' read -r line || [[ -n "$line" ]]; do
     if [[ $line == *">"* ]]; then
 	    counter=$((counter+1))
-	    echo "Text read from file: $line"
 	    firstp=$(echo $line | grep -P '^>\d{3}.' -o)
 	    secondp=$(echo $line | grep -P ';.+' -o)
 	    labelname=$(echo $line | grep -P '(?<=>\d{3}\.)[^;]+' -o)

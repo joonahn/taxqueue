@@ -4,9 +4,14 @@
 
 	function mylog($log_txt)
 	{
+
 		if ($log_txt !== "")
 		{
-			$log = fopen("../log/access.txt","a");
+			// Restrict log size < 5MB
+			if (filesize("../log/access.txt") > 5242880)
+				$log = fopen("../log/access.txt","w");
+			else
+				$log = fopen("../log/access.txt","a");
 			fwrite($log, "[log]:".$log_txt."\r\n");  
 			fclose($log);
 		}
