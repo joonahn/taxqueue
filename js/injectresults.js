@@ -6,5 +6,6 @@ function loadTable() {
 }
 
 $(document).ready(function() {
+	loadTable();
 	setInterval(loadTable, 30000);
 });
