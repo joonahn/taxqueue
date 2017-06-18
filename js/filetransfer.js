@@ -99,7 +99,13 @@ $(document).ready(function() {
 
 			// CALL
 			// setTimeout(restartFiles(), 500);
-			setTimeout(location.reload(), 500);
+			// setTimeout(location.reload(), 500);
+			setTimeout(function() {
+				restartFiles();
+				loadTable();
+				window.scrollTo(0,document.body.scrollHeight);
+			}, 500);
+
 		});
 	}
 
