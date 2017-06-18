@@ -32,6 +32,7 @@ fileTotalCntMapList = []
 with open(otufilename, 'r') as f:
 	# remove firstline(table header)
 	line = f.readline()
+	line.strip()
 	headerlist = line.split('\t')
 	headerlist.pop(0)
 	headerlist = map((lambda x: x.strip()), headerlist)
@@ -54,6 +55,7 @@ with open(taxfilename, 'r') as f:
 	while True:
 		line = f.readline()
 		if not line: break
+		line.strip()
 		otuID = line.split('\t')[0].split(';')[0]
 		taxs = line.split('\t')[1].split(';')
 		for i in range(0, 7):
@@ -72,6 +74,7 @@ with open(otufilename, 'r') as f:
 	while True:
 		line = f.readline()
 		if not line: break
+		line.strip()
 		cntdata = line.split('\t')
 		cntdata.pop(0)
 		otuID = line.split('\t')[0]

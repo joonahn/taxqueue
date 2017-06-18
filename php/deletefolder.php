@@ -16,6 +16,13 @@
 			return;
 		}
 
+		// Check directory
+		if(strpos($ID, '/') !== false)
+		{
+			echo "[ERROR] CHDIR NOT SUPPORTED";
+			return;
+		}
+
 		// Check folder existance
 		if (!file_exists("../data/{$ID}"))
 		{

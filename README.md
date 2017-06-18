@@ -32,8 +32,8 @@ Taxonomy assignment with task queue
 ## Files touching queue.txt/results.txt
 - `enqueue.php` :	(w)/()
 - `dequeue.php` :	(r,w)/(w)
-- `vallidate.php` :	(r)
-- `results.php` :	(r)
+- `vallidate.php` :	(r)/(r)
+- `results.php` :	(r)/(r)
 - `deletefolder.php` : ()/(w)
 
 ## queue.txt File format
