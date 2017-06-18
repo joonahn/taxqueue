@@ -110,6 +110,47 @@
 		return "./data/{$folder_name}/{$randomName}";
 	}
 
+	// check existance of
+	// merged.fa, derep.fa, otus.fa, otus.txt
+	// SUCCESS:	return ""
+	// FAIL:	return "{$reason}"
+	function makeotu_check($folder_name) {
+
+		if (!file_exists("../data/{$folder_name}/merged.fa"))
+			return "merged.fa file does not exists";
+
+		if (!file_exists("../data/{$folder_name}/derep.fa"))
+			return "derep.fa file does not exists";
+
+		if (!file_exists("../data/{$folder_name}/otus.fa"))
+			return "otus.fa file does not exists";
+
+		if (!file_exists("../data/{$folder_name}/otus.txt"))
+			return "otus.txt file does not exists";
+
+		if (filesize ("../data/{$folder_name}/otus.txt") === 0)
+			return "otus.txt file is empty";
+
+		return "";
+	}
+
+	// check existance of
+	// otus_tax_assignments.txt, 1.txt, 7.txt
+	// SUCCESS:	return ""
+	// FAIL:	return "{$reason}"
+	function taxassn_check($folder_name) {
+		if (!file_exists("../data/{$folder_name}/tax_output/otus_tax_assignments.txt"))
+			return "otus_tax_assignments.txt file does not exists";
+
+		if (!file_exists("../data/{$folder_name}/1.txt"))
+			return "1.txt file does not exists";
+
+		if (!file_exists("../data/{$folder_name}/7.txt"))
+			return "7.txt file does not exists";
+
+		return "";
+	}
+
 	function failed($taskname, $reason, $ID) {
 		shell_exec("sed -ie '/^{$taskname}/d' ../data/queued.txt");
 		$result_str = "{$taskname}\tfailed\t-\t{$reason}\t{$ID}";
@@ -140,23 +181,32 @@
 
 		shell_exec("sed -ie '/^{$post_data['taskname']}/ s/queued/processing/' ../data/queued.txt");
 		shell_exec("chown www-data:www-data ../data/queued.txt");
-
 		$randomFolder = $post_data['randomfolder'];
+
+		// Make OTU
 		$otufolder = makeotu($post_data);
-		if ($otufolder === "") {
-			failed($post_data['taskname'], "makeotu failed", $post_data['randomfolder']);
+		$reason = makeotu_check($randomFolder);
+		if ($reason !== "") {
+			failed($post_data['taskname'], 
+					"makeotu failed: {$reason}", 
+					$randomFolder);
 			return;
 		}
 
+		// Taxonomy Assignment
 		$resultFiles = taxassn($post_data, $randomFolder);
-		if (count($resultFiles) === 0) {
-			failed($post_data['taskname'], "taxonomy assignment failed", $post_data['randomfolder']);
+		$reason = taxassn_check($randomFolder);
+		if ($reason !== "") {
+			failed($post_data['taskname'], 
+					"taxassn failed: {$reason}", 
+					$randomFolder);
 			return;
 		}
 
+		// Archive
 		$archivePath = archive($resultFiles, $randomFolder);
 		if ($archivePath === "") {
-			failed($post_data['taskname'], "archiving failed", $post_data['randomfolder']);
+			failed($post_data['taskname'], "archiving failed", $randomFolder);
 			return;
 		}
 
