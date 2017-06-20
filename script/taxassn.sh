@@ -51,17 +51,17 @@ elif [[ $taxalg == *"BLAST"* ]]; then
 	# tax assign with BLAST
 	if [[ $rdpdb == *"greengenes"* ]]; then
 		# tax assign with greengenes db
-		parallel_assign_taxonomy_blast.py -i "${ffolder}/otus.fa" \
+		assign_taxonomy.py -i "${ffolder}/otus.fa" \
 		 -t "./gg_otus_may2013/taxonomy/97_otu_taxonomy.txt" \
 		 -r "./gg_otus_may2013/rep_set/97_otus.fasta" \
-		 -o "${ffolder}/tax_output"
+		 -o "${ffolder}/tax_output" -m blast
 
 	elif [[ $rdpdb == *"silva"* ]]; then
 		# tax assign with silva db
-		parallel_assign_taxonomy_blast.py -i "${ffolder}/otus.fa" \
+		assign_taxonomy.py -i "${ffolder}/otus.fa" \
 		 -t "./SILVA_128_QIIME_release/taxonomy/16S_only/97/consensus_taxonomy_7_levels.txt" \
 		 -r "./SILVA_128_QIIME_release/rep_set/rep_set_16S_only/97/97_otus_16S.fasta" \
-		 -o "${ffolder}/tax_output"
+		 -o "${ffolder}/tax_output" -m blast
 
 	elif [[ $rdpdb == *"unite"* ]]; then
 			#statements
