@@ -49,6 +49,7 @@ if [[ $taxalg == *"RDP"* ]]; then
 elif [[ $taxalg == *"BLAST"* ]]; then
 
 	# tax assign with BLAST
+	export BLASTMAT=None
 	if [[ $rdpdb == *"greengenes"* ]]; then
 		# tax assign with greengenes db
 		assign_taxonomy.py -i "${ffolder}/otus.fa" \
