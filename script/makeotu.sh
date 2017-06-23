@@ -44,7 +44,10 @@ for fname in "$@"; do
 			./usearch -search_oligodb "${fname}_match_primer.fastq" -db "${primerseq}/bprimer_rc.fa" -strand plus \
 			  -maxdiffs 3 -matchedfq "${fname}_match_fbprimer.fastq"
 			./usearch -search_oligodb "${fname}_match_bprimer_rc.fastq" -db "${primerseq}/primer.fa" -strand plus \
-			  -maxdiffs 3 -matchedfq "${fname}_match_fbprimer2.fastq"
+			  -maxdiffs 3 -matchedfq "${fname}_match_fbprimer2_rc.fastq"
+
+			# Make reverse complement of backward primer seq
+			./usearch -fastx_revcomp "${fname}_match_fbprimer2_rc.fastq" -label_suffix _RC -fastqout "${fname}_match_fbprimer2.fastq"
 
 			# Merge two files
 			cat "${fname}_match_fbprimer.fastq" "${fname}_match_fbprimer2.fastq" > "${fname}_concat.fastq"
@@ -91,7 +94,7 @@ for fname in "$@"; do
 			# match with bprimer, primer_rc 
 			./usearch -search_oligodb "${fname}.fastq" -db "${primerseq}/bprimer.fa" -strand plus \
 			  -maxdiffs 3 -matchedfq "${fname}_match_bprimer.fastq"	
-			./usearch -search_oligodb "${fname}_match_primer.fastq" -db "${primerseq}/primer_rc.fa" -strand plus \
+			./usearch -search_oligodb "${fname}_match_bprimer.fastq" -db "${primerseq}/primer_rc.fa" -strand plus \
 			  -maxdiffs 3 -matchedfq "${fname}_match_fbprimer_rc.fastq"
 
 			# Make reverse complement of backward primer seq
