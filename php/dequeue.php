@@ -158,7 +158,7 @@
 
 	function failed($taskname, $reason, $ID) {
 		shell_exec("sed -ie '/^{$taskname}/d' ../data/queued.txt");
-		$result_str = "{$taskname}\tfailed\t-\t{$reason}\t{$ID}";
+		$result_str = "{$taskname}\tfailed\t-\t{$reason}/{$ID}\t{$ID}";
 		shell_exec("echo \"{$result_str}\" >> ../data/results.txt");
 		shell_exec("chown www-data:www-data ../data/results.txt");
 		shell_exec("chown www-data:www-data ../data/queued.txt");

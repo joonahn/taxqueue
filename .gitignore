@@ -5,3 +5,4 @@ script/gg_otus_may2013/
 log/
 vendor/
 composer.lock
+nohup.out
