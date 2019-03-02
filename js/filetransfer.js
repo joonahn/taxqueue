@@ -87,8 +87,9 @@ $(document).ready(function() {
 			return;
 		}
 
-		$.post('php/enqueue.php', 
-			combineJSON(makeOTUTarget(uploadFinishedArray),taxAssignOptions), 
+		$.post('http://asdf:8787/', 
+			// combineJSON(makeOTUTarget(uploadFinishedArray),taxAssignOptions), 
+			combineJSON({'filepaths': uploadFinishedArray.join(',')},taxAssignOptions), 
 			function(data) {
 			
 			// Change the bar to represent how much has loaded
@@ -127,7 +128,20 @@ $(document).ready(function() {
 	    var x = $("#optionForm").serializeArray();
 	    $.each(x, function(i, field){
 	        taxAssignOptions[field.name]=field.value;
-	    });
+		});
+		var matchPrimerOption = "";
+		if($('#checkFwd').is(":checked")) {
+			matchPrimerOption += "fwd";
+		}
+		if($('#checkRev').is(":checked")) {
+			matchPrimerOption += "rev";
+		}
+		if($('#checkFull').is(":checked")) {
+			matchPrimerOption += "rev";
+		}
+		if (matchPrimerOption != "") {
+			taxAssignOptions["matchoption"] = matchPrimerOption;
+		}
 		return taxAssignOptions;
 	}
 
@@ -199,22 +213,7 @@ $(document).ready(function() {
 		}
 		else
 		{
-			var taskname_data = {};
-			taskname_data['taskname'] = $('#taskname').val();
-
-			// Validate taskname with ajax request
-			$.post('./php/validate.php', taskname_data)
-			  .done(function(data) {
-			  	if (data == "Good")
-			  	{
-					return uploadFiles(dataArray, taxAssignOptions);
-			  	}
-				else
-				{
-					alert("The taskname already exists!!");
-					return restartFiles();
-				}
-			});
+			return uploadFiles(dataArray, taxAssignOptions);
 		}
 	});
 	
